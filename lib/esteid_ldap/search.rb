@@ -8,11 +8,10 @@ class Search
   BASE = 'c=EE'
 
   class << self
-    def search(code)
-      @connector ||= Connector.connect
+    def search(connector, code)
       search_filter = Net::LDAP::Filter.eq('serialNumber', "PNOEE-#{code}")
 
-      @connector.search(base: BASE, filter: search_filter, return_result: true).present?
+      connector.search(base: BASE, filter: search_filter, return_result: true).present?
     end
   end
 end
