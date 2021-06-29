@@ -8,12 +8,10 @@ class EsteidLdapTest < ActiveSupport::TestCase
   end
 
   def test_search_existing_ident_code
-    ident = Search.new
-    assert ident.search('38903110313')
+    assert Search.search('38903110313')
   end
 
-	def test_search_non_existing_ident_code
-    ident = Search.new
-    assert_not ident.search('2222222')
+  def test_search_non_existing_ident_code
+    assert_not Search.search('2222222')
   end
 end
