@@ -11,9 +11,9 @@ module EsteidLdap
   class Error < StandardError; end
 
   class << self
-    def search_by_ident(code)
+    def search_by_ident(code, with_data)
       connect_to_ldap
-      Search.search(@connector, code)
+      Search.search(@connector, code, with_data)
     end
 
     private
