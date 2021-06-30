@@ -23,13 +23,13 @@ Or install it yourself as:
 In order to perform a search, you just need to add the line:
 
 ```ruby
-MockEsteidLdap.search_by_ident('10101010005', false)
+EsteidLdap.search_by_ident('10101010005', false)
 ```
 
 or
 
 ```ruby
-MockEsteidLdap.search_by_ident('10101010005', true)
+EsteidLdap.search_by_ident('10101010005', true)
 ```
 
 and that's all.
@@ -43,7 +43,7 @@ The other state of the flag is true - in this case, information about its carrie
 The information comes in the form of JSON with the following keys:
 
 ```ruby
-result = MockEsteidLdap.search_by_ident('10101010005', true)
+result = EsteidLdap.search_by_ident('10101010005', true)
 
 result[:dn]
 result[:objectclass]
