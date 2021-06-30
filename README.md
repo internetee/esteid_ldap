@@ -34,7 +34,7 @@ EsteidLdap.search_by_ident('10101010005', true)
 
 and that's all.
 
-The method accepts two arguments: the first argument is the iden code, the second argument is the flag - to return a response with data or not.
+The method accepts two arguments: the first argument is the ident code, the second argument is the flag - to return a response with data or not.
 
 If the flag is set to false, then the response will be only two states - true or false. This is necessary in order to check whether such a personal code exists or not.
 
