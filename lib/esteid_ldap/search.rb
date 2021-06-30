@@ -16,7 +16,7 @@ class Search
 
       result = connector.search(base: BASE, filter: search_filter, return_result: true)
 
-      return false if result == []
+      return false if result == [] || result.nil?
 
       parse_result_to_json(result)
     end
