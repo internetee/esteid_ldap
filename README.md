@@ -1,8 +1,6 @@
 # EsteidLdap
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/esteid_ldap`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem allows you to make queries to ESTEID LDAP for information about EE ident code (isikukood)
 
 ## Installation
 
@@ -22,7 +20,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In order to perform a search, you just need to add the line:
+
+```ruby
+	MockEsteidLdap.search_by_ident('10101010005', false)
+```
+
+or
+
+```ruby
+	MockEsteidLdap.search_by_ident('10101010005', true)
+```
+
+and that's all.
+
+The method accepts two arguments: the first argument is the iden code, the second argument is the flag - to return a response with data or not.
+
+If the flag is set to false, then the response will be only two states - true or false. This is necessary in order to check whether such a personal code exists or not.
+
+The other state of the flag is true - in this case, information about its carrier is returned to the request for a personal code.
+
+The information comes in the form of JSON with the following keys:
+
+```ruby
+		result = MockEsteidLdap.search_by_ident('10101010005', true)
+
+		result[:dn]
+		result[:objectclass]
+    result[:cn]
+    result[:serialNumber]
+    result[:"usercertificate;binary"]
+```
 
 ## Development
 
@@ -32,7 +60,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/esteid_ldap.
+Bug reports and pull requests are welcome on GitHub at https://github.com/internetee/esteid_ldap.
 
 
 ## License
