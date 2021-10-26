@@ -7,7 +7,7 @@ This gem allows you to make queries to ESTEID LDAP for information about EE iden
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'esteid_ldap'
+gem 'esteid_ldap' or gem 'esteid_ldap', github: 'internetee/esteid_ldap', branch: :master
 ```
 
 And then execute:
@@ -23,33 +23,58 @@ Or install it yourself as:
 In order to perform a search, you just need to add the line:
 
 ```ruby
-EsteidLdap.search_by_ident('10101010005', false)
-```
+require 'esteid_ldap'
 
-or
-
-```ruby
-EsteidLdap.search_by_ident('10101010005', true)
+esteid_ldap_instance = EsteidLdap::Search.new
+esteid_ldap_instance.search_by_ident(code: '10101010005', with_data: true, in_json: true)
 ```
 
 and that's all.
 
-The method accepts two arguments: the first argument is the ident code, the second argument is the flag - to return a response with data or not.
+An instance of the Search class takes four parameters. By default, they have the following meanings:
+```
+  BASE = 'c=EE'
+  HOST_ADDRESS = 'esteid.ldap.sk.ee'
+  PORT = '636'
+  SSL_METHOD = :simple_tls
+```
 
-If the flag is set to false, then the response will be only two states - true or false. This is necessary in order to check whether such a personal code exists or not.
+These parameters can be overridden if necessary.
+`EsteidLdap::Search.new(host: another.ldap.sk.ee', port: 777, ssl: nil, base: 'c=LV')`
 
-The other state of the flag is true - in this case, information about its carrier is returned to the request for a personal code.
+The search class has only one open interface method `search_by_ident`.
+This method takes three parameters: `code, with_data and in_json`, where `code` -this is the personal code of a resident of Estonia, `with_data` - this allows you to override, return data or return a boolean value, and the third parameter `in_json` - allows you to define in which structure to send a response, to json or as an instance of the structure
 
-The information comes in the form of JSON with the following keys:
+##Examples:
 
 ```ruby
-result = EsteidLdap.search_by_ident('10101010005', true)
+e = EsteidLdap::Search.new
+e.search_by_ident(code: '10101010005', with_data: true, in_json: true)
+=>
+  {:dn=>["cn=FirstName\\2LastName\\2C10101010005,ou=Authentication,o=Residence card of long-term resident,dc=ESTEID,c=EE"],
+   :objectclass=>["top", "person", "organizationalPerson", "inetOrgPerson"],
+   :cn=>["LastName,FirstName,10101010005"],
+   :serialNumber=>["PNOEE-10101010005"],
+   :"usercertificate;binary"=> 'some info'}
 
-result[:dn]
-result[:objectclass]
-result[:cn]
-result[:serialNumber]
-result[:"usercertificate;binary"]
+```
+
+```ruby
+e = EsteidLdap::Search.new
+e.search_by_ident(code: '10101010005', with_data: true, in_json: false)
+=>
+  <struct EsteidLdap::Citizen
+  :dn=>["cn=FirstName\\2LastName\\2C10101010005,ou=Authentication,o=Residence card of long-term resident,dc=ESTEID,c=EE"],
+   :objectclass=>["top", "person", "organizationalPerson", "inetOrgPerson"],
+   :cn=>["LastName,FirstName,10101010005"],
+   :serialNumber=>["PNOEE-10101010005"],
+   :"usercertificate;binary"=> 'some info'>
+````
+
+```ruby
+e.search_by_ident(code: '10101010005', with_data: false, in_json: false)
+=> true
+
 ```
 
 ## Development
