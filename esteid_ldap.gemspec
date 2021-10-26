@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '~> 6.1'
   spec.add_dependency 'bundler', '~> 2.0'
   spec.add_dependency 'net-ldap', '~> 0.17.0'
-  spec.add_dependency 'rake', '~> 12.0'
+  spec.add_dependency 'rake', '~> 13.0'
 end
