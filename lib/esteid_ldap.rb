@@ -24,7 +24,7 @@ require_relative 'esteid_ldap/connector'
 # otherwise results return in structure type
 
 #
-# ------------ Conntector ------------------
+# ------------ Conntector -------------------
 # Class name Connector accepts three parameters: hostname, port, and SSL method
 # more information about Net::LDAP you can read here:
 # https://www.rubydoc.info/github/ruby-ldap/ruby-net-ldap/Net%2FLDAP:search
@@ -50,26 +50,33 @@ module EsteidLdap
 
     def search_by_ident(code:, with_data:, in_json:)
       search_filter = Net::LDAP::Filter.eq('serialNumber', "PNOEE-#{code}")
-      result = @connector.search(base: @base, filter: search_filter, return_result: with_data)
+      result = @connector.search(base: @base, filter: search_filter, return_result: true)
 
-      return false if result.blank?
+      return false if result.empty?
 
-      if in_json
-        parse_result_to_json(result: result, with_data: with_data)
+      unless with_data
+        return true
       else
-        parse_result_in_struct_object(result: result, with_data: with_data)
+        parsing_data(in_json: in_json, result: result)
       end
+
     end
 
     private
+
+    def parsing_data(in_json:, result:)
+    if in_json
+        parse_result_to_json(result: result)
+      else
+        parse_result_in_struct_object(result: result)
+      end
+    end
 
     def connect_to_ldap
        Connector.connect(@host, @port, @ssl)
     end
 
-    def parse_result_to_json(result:, with_data:)
-      return result unless with_data
-
+    def parse_result_to_json(result:)
       {
         'dn': result[0][:dn],
         'objectclass': result[0][:objectclass],
@@ -79,9 +86,7 @@ module EsteidLdap
       }
     end
 
-    def parse_result_in_struct_object(result:, with_data:)
-      return result unless with_data
-
+    def parse_result_in_struct_object(result:)
       Citizen.new(result[0][:dn], result[0][:objectclass], result[0][:cn], result[0][:serialNumber], result[0][:"usercertificate;binary"])
     end
   end
