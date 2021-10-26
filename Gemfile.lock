@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    esteid_ldap (1.0.0)
+    esteid_ldap (2.0.0)
       activesupport (~> 6.1)
       bundler (~> 2.0)
       net-ldap (~> 0.17.0)

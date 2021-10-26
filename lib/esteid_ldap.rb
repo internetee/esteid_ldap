@@ -48,17 +48,19 @@ module EsteidLdap
       @connector = connect_to_ldap
     end
 
-    def search_by_ident(code:, with_data:,in_json:)
+    def search_by_ident(code:, with_data:, in_json:)
       search_filter = Net::LDAP::Filter.eq('serialNumber', "PNOEE-#{code}")
       result = @connector.search(base: @base, filter: search_filter, return_result: with_data)
 
-      return false if result.blank?
+      result
 
-      if in_json
-        parse_result_to_json(result: result, with_data: with_data)
-      else
-        parse_result_in_struct_object(result: result, with_data: with_data)
-      end
+      # return false if result.blank? or result.nil? or result == []
+      #
+      # if in_json
+      #   parse_result_to_json(result: result, with_data: with_data)
+      # else
+      #   parse_result_in_struct_object(result: result, with_data: with_data)
+      # end
     end
 
     private
