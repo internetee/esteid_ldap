@@ -24,7 +24,7 @@ require_relative 'esteid_ldap/connector'
 # otherwise results return in structure type
 
 #
-# ------------ Conntector ------------------
+# ------------ Conntector -------------------
 # Class name Connector accepts three parameters: hostname, port, and SSL method
 # more information about Net::LDAP you can read here:
 # https://www.rubydoc.info/github/ruby-ldap/ruby-net-ldap/Net%2FLDAP:search
